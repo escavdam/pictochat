@@ -35,8 +35,35 @@ function draw() {
         }
         //socket.emit("paint", datos)
       fill(0);
-      ellipse(mouseX, mouseY, 20)
+      
+      line(mouseX,mouseY, pmouseX, pmouseY);
     }
 }
+const socket = io();
+const form = document.getElementById('formulario');
+const input = document.getElementById('inputtext');
+const messages = document.getElementById('mensajes');
 
- 
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (input.value) {
+    socket.emit('chat message', input.value);
+    input.value = '';
+  }
+});
+
+socket.on('chat message', (msg) => {
+  const item = document.createElement('li');
+  item.textContent = msg;
+  messages.appendChild(item);
+  window.scrollTo(0, document.body.scrollHeight);
+});
+
+socket.on('init chat', (mensajes)=> {
+  console.log(mensajes)
+  mensajes.forEach(mensajeObjeto =>{
+    const li = document.createElement("li")
+    li.innerHTML = mensajeObjeto.mensaje
+    messages.appendChild(li)
+  })
+});
