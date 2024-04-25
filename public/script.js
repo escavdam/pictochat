@@ -6,11 +6,11 @@ const elemento = $('section')
         isDragging = true;
       },
       drag: function() {
-        console.log("arrastrando")
+        isDragging = true;
 
       },
       stop: function() {
-        console.log("me has soltado")
+        isDragging = false;
       }
     });
   } );
@@ -25,6 +25,11 @@ function toggleChat(){
     form.style.display = "none"
   }
 }
+
+const form = document.getElementById('formulario');
+
+
+Socket.on('chat message'),
  
 function setup() {
   createCanvas(windowWidth, windowHeight);
