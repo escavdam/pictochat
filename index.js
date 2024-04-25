@@ -13,8 +13,15 @@ app.get('/', (req, res) => {
     res.send('¡Hola, mundo!');
   });
 
+  app.get('/reset', (req, res) => {
+    initDB();
+    res.send("Base de datos reiniciada")
+  });
+
 io.on('connection', (socket) => {
   console.log("usuario conectado")
+  const mensajes = read()
+  io.emit("init chat", mensajes)
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   }),

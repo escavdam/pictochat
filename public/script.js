@@ -58,6 +58,15 @@ input.value = '';
 }
 });
 
+//Eveneto inicio chat
+socket.on('init chat', (mensajes)=> {
+  console.log(mensajes)
+  mensajes.forEach(mensajesOBJ => {
+    const li = document.createElement("li")
+    li.innerHTML = mensajesOBJ.mensaje
+    messages.appendChild(li)
+  })
+})
 
 socket.on('chat message', (msg) => {
 const item = document.createElement('li');
