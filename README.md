@@ -6,3 +6,4 @@ Pasos:
 2. Devolver front actualizado (chat + p5)
 3. Implementar sockets
 4. Guardar mensajes en DB
+5. cambio tonto
