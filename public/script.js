@@ -26,6 +26,72 @@ function toggleChat(){
     form.style.display = "none"
   }
 }
+
+  const socket = io();
+  let pincelSize = 10; // Tamaño inicial del pincel
+let pincelColor = '#000000'; // Color inicial del pincel
+  const form = document.getElementById('formulario');
+const input = document.getElementById('inputTexto');
+const messages = document.getElementById('mensajes');
+let prevMouseX;
+let prevMouseY;
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (input.value) {
+    socket.emit('chat message', input.value);
+    input.value = '';
+  }
+});
+
+socket.on('init chat', (mensajes) =>
+{
+  console.log(mensajes);
+  mensajes.forEach(mensajeObjeto => {
+    const li = document.createElement("li")
+    li.innerHTML = mensajeObjeto.mensaje
+    messages.appendChild(li);
+  });
+})
+
+socket.on('chat message', (msg) => {
+  const item = document.createElement('li');
+  item.textContent = msg;
+  messages.appendChild(item);
+  window.scrollTo(0, document.body.scrollHeight);
+});
+
+socket.on('drawing', (data) => {
+  fill(pincelColor);
+  ellipse(data.x, data.y, pincelSize, pincelSize);
+});
+
+function setup() {
+  createCanvas(1920, 740);
+  
+  prevMouseX = mouseX;
+  prevMouseY = mouseY;
+}
+
+function draw() {
+  if (mouseIsPressed && (mouseX !== prevMouseX || mouseY !== prevMouseY)) {
+    socket.emit('drawing', { x: mouseX, y: mouseY });
+    prevMouseX = mouseX;
+    prevMouseY = mouseY;
+  }
+}
+
+function getRange() {
+  const rango = document.querySelector("#brushSizeInput").value;
+  pincelSize = rango;
+}
+
+function getColor() {
+  const color = document.querySelector("#InputColor").value;
+  pincelColor = color;
+}
+
+
  
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -39,7 +105,8 @@ function draw() {
         }
         //socket.emit("paint", datos)
       fill(0);
-      ellipse(mouseX, mouseY, 20)
+      //ellipse(mouseX, mouseY, 1)
+      line(mouseX, mouseY, pmouseX, pmouseY)
     }
 }
 
