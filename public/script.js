@@ -1,3 +1,8 @@
+const socket = io();
+const form = document.getElementById('formulario');
+const input = document.getElementById('inputTexto');
+const messages = document.getElementById('mensajes');
+
 let isDragging = false;
 const elemento = $('section')
   $( function() {
@@ -11,6 +16,7 @@ const elemento = $('section')
       },
       stop: function() {
         console.log("me has soltado")
+        isDragging = false;
       }
     });
   } );
@@ -38,8 +44,30 @@ function draw() {
         }
         //socket.emit("paint", datos)
       fill(0);
-      ellipse(mouseX, mouseY, 20)
+      //ellipse(mouseX, mouseY, 20)
+      line(mouseX, mouseY, pmouseX, pmouseY)
     }
 }
+
+
+form.addEventListener('submit', (e) => {
+e.preventDefault();
+if (input.value) {
+socket.emit('chat message', input.value);
+input.value = '';
+}
+});
+
+
+socket.on('chat message', (msg) => {
+const item = document.createElement('li');
+item.textContent = msg;
+messages.appendChild(item);
+window.scrollTo(0, document.body.scrollHeight);
+});
+
+socket.on('paint', (datos) => {
+ellipse(datos.x, datos.y, 20)
+});
 
  
