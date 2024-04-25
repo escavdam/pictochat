@@ -5,12 +5,9 @@ const elemento = $('section')
       start: function() {
         isDragging = true;
       },
-      drag: function() {
-        console.log("arrastrando")
-
-      },
       stop: function() {
         console.log("me has soltado")
+        isDragging = false;
       }
     });
   } );
