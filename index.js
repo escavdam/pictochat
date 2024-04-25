@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
   const mensajes = read()
   io.emit("init chat", mensajes)
   socket.on('chat message', (msg) => {
+    insertarMensaje(msg);
     io.emit('chat message', msg);
   }),
   socket.on('paint', (datos) =>{
