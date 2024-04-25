@@ -6,5 +6,3 @@ Pasos:
 2. Devolver front actualizado (chat + p5)
 3. Implementar sockets
 4. Guardar mensajes en DB
-
-Prueba para saber que funciona en mi rama.
