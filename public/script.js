@@ -11,6 +11,7 @@ const elemento = $('section')
       },
       stop: function() {
         console.log("me has soltado")
+        isDragging = false;
       }
     });
   } );
