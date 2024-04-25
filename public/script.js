@@ -5,12 +5,8 @@ const elemento = $('section')
       start: function() {
         isDragging = true;
       },
-      drag: function() {
-        console.log("arrastrando")
-
-      },
       stop: function() {
-        console.log("me has soltado")
+        isDragging = false;
       }
     });
   } );
@@ -25,6 +21,36 @@ function toggleChat(){
     form.style.display = "none"
   }
 }
+
+const socket = io();
+
+const form = document.getElementById('formulario');
+const input = document.getElementById('inputText');
+const messages = document.getElementById('messages');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (input.value) {
+    socket.emit('chat message', input.value);
+    input.value = '';
+  }
+});
+
+socket.on('init chat', (mensajes) => {
+  mensajes.forEach(mensajeObjeto => {
+    const li = document.createElement("li");
+    li.innerHTML = mensajeObjeto.mensaje;
+    messages.appendChild(li);
+  })
+});
+
+
+socket.on('chat message', (msg) => {
+  const item = document.createElement('li');
+  item.textContent = msg;
+  messages.appendChild(item);
+  window.scrollTo(0, document.body.scrollHeight);
+});
  
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -32,13 +58,16 @@ function setup() {
 
 function draw() {
     if(mouseIsPressed && !isDragging) {
+      if(mouseX !== pmouseX || mouseY !== pmouseY){
         const datos = {
-            x: mouseX,
-            y: mouseY
+          x: mouseX,
+          y: mouseY
         }
         //socket.emit("paint", datos)
-      fill(0);
-      ellipse(mouseX, mouseY, 20)
+        fill(0);
+        //ellipse(mouseX, mouseY, 20);
+        line(mouseX, mouseY, pmouseX, pmouseY);
+      }
     }
 }
 
