@@ -15,8 +15,7 @@ function initDB(){
 }
 
 function read(){
-    return db.prepare("SELECT * FROM mensajes ORDER BY id DESC LIMIT 5 ").all()
-    
+    return db.prepare("SELECT * FROM mensajes ORDER BY id DESC LIMIT 5 ").all()    
 }
 
 function insertarMensaje(mensaje){
